@@ -131,9 +131,9 @@ def login():
 
 def delete_user(username):
     try:
-        keys_response = iam.list_access_keyus(UserName=username)
+        keys_response = iam.list_access_keys(UserName=username)
         for key in keys_response['AccessKeyMetadata']:
-            iam.delete_access_key(UserName=username, AccessKeyOD=key['AccessKeyID'])
+            iam.delete_access_key(UserName=username, AccessKeyID=key['AccessKeyId'])
             print(f"Deleted access key: {key['AccessKeyId']}")
     
         inline_policies = iam.list_user_policies(UserName=username)
@@ -142,8 +142,8 @@ def delete_user(username):
             print(f"Deleted inline policy: {policy_name}")
         
         attached_policies = iam.list_attached_user_policies(UserName=username)
-        for policy in attached_policies['AttacbedPolicies']:
-            iam.detach_user_policy(Username=username, PolicyArn=policy['PolicyArn]'])
+        for policy in attached_policies['AttachedPolicies']:
+            iam.detach_user_policy(Username=username, PolicyArn=policy['PolicyArn'])
         
         iam.delete_user(Username=username)
         print(f"Deleted user {username} successfully.")

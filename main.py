@@ -30,20 +30,30 @@ def login_menu():
             print("Invalid option. Choose an integer 1-3. ")
             return 
         
+
 def handle_login():
-    username, session = IAM_manager.login_user()
+    session = IAM_manager.login()  # login() returns session or None
     if session:
+        username = input("Please enter your username for verification: ").strip()
         return username, session
-    print("Login failed. Try again")
+    print("Login failed. Try again.")
     return None, None
 
 def register_login():
-    username, session = IAM_manager.register_user()
-    if session:
-        return username, session
+    username = IAM_manager.register_user()  # returns username or None
+    if username:
+        access_key, secret_key = IAM_manager.create_access_keys(username)
+        if access_key and secret_key:
+            session = IAM_manager.create_user_session(access_key, secret_key)
+            if session:
+                IAM_manager.attach_policies(username)
+                return username, session
     print("Registration failed. Try again.")
     return None, None
 
+
+
+####
 
 def main_menu():
     while True:
