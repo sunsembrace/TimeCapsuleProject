@@ -86,7 +86,7 @@ def main_menu():
             print("Invalid choice please select a number between 1 and 4.")
 
 if __name__ == "__main__":
-    main_menu()
     while True:
         username, session = login_menu()
-        main_menu(session,username)
+        if session:
+            main_menu(session, username)
